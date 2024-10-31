@@ -1,0 +1,24 @@
+BEGIN;
+CREATE TABLE IF NOT EXISTS users(
+    id uuid PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS roles(
+    id uuid PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT NULL
+);
+
+CREATE TABLE IF NOT EXISTS user_roles(
+    id uuid PRIMARY KEY,
+    user_id uuid NOT NULL REFERENCES users(id),
+    role_id uuid NOT NULL REFERENCES roles(id)
+);
+COMMIT;
+END;

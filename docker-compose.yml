@@ -1,0 +1,32 @@
+services:
+  identity-server.db:
+    image: postgres:16.2
+    environment:
+      POSTGRES_USER: identity-server
+      POSTGRES_PASSWORD: identity-server
+      POSTGRES_DB: identity-server
+    ports:
+      - "5411:5432"
+    volumes:
+      - identity-server.db-data:/var/lib/postgresql/data
+    networks:
+      - lets-go-net
+  identity-server:
+    image: identity-server:v1.0
+    build:
+      context: .
+      dockerfile: apps/identity-server/Dockerfile
+    ports:
+      - "5132:80"
+    env_file:
+      - apps/identity-server/.env.container
+    depends_on:
+      - identity-server.db
+    networks:
+      - lets-go-net
+volumes:
+  identity-server.db-data:
+    driver: local
+networks:
+  lets-go-net:
+    driver: bridge
