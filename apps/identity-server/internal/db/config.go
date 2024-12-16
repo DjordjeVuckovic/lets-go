@@ -13,6 +13,7 @@ const (
 
 type Config struct {
 	ConnectionString         string
+	DbName                   string
 	ConnectionPoolSize       int
 	ConnectionMaxLifetimeSec int
 	ConnectionMaxIdleTime    int
@@ -46,6 +47,7 @@ func LoadConfig() (*Config, error) {
 	connString := "host=" + dbHost + " user=" + dbUsername + " password=" + dbPassword + " dbname=" + dbName + " port=" + dbPort + " sslmode=" + dbSslMode
 	return &Config{
 		ConnectionString:         connString,
+		DbName:                   dbName,
 		ConnectionPoolSize:       ConnectionPoolSize,
 		ConnectionMaxIdleTime:    ConnectionMaxIdleTime,
 		ConnectionMaxLifetimeSec: ConnectionMaxLifetime,

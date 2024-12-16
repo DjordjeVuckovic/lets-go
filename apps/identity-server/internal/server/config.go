@@ -5,13 +5,13 @@ import (
 	"strings"
 )
 
-type EnvConfig struct {
+type Config struct {
 	Port        string
 	UseHttp2    bool
 	CorsOrigins []string
 }
 
-func LoadConfig() (*EnvConfig, error) {
+func LoadConfig() (*Config, error) {
 	useHttp2Str := os.Getenv("USE_HTTP2")
 	useHttp2 := useHttp2Str == "true"
 
@@ -21,7 +21,7 @@ func LoadConfig() (*EnvConfig, error) {
 	}
 
 	origins := strings.Split(os.Getenv("CORS_ORIGINS"), ",")
-	return &EnvConfig{
+	return &Config{
 		Port:        port,
 		UseHttp2:    useHttp2,
 		CorsOrigins: origins,

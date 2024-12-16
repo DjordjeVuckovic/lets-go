@@ -10,28 +10,28 @@ import (
 )
 
 func main() {
-	appConfig := config.LoadConfig()
+	appConfig := config.LoadAppConfig()
 	logConfig := logger.Config{
 		Level:   appConfig.LogLevel,
 		Handler: appConfig.LogHandler,
 	}
 	logger.Init(logConfig)
 
-	dbConfig, err := db.LoadConfig()
+	dbCfg, err := db.LoadConfig()
 	if err != nil {
 		panic(err)
 	}
-	database, dbErr := db.NewDatabase(dbConfig)
+	database, dbErr := db.NewDatabase(dbCfg)
 	if dbErr != nil {
 		panic(dbErr)
 	}
 
-	serverConfig, err := server.LoadConfig()
+	serverCfg, err := server.LoadConfig()
 	if err != nil {
 		panic(err)
 	}
 	e := echo.New()
-	s := server.NewServer(e, serverConfig, database)
+	s := server.NewServer(e, serverCfg, database)
 
 	a := api.NewAuthRouter(e, database)
 	a.RegisterRoutes()

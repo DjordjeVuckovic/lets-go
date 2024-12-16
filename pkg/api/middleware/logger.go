@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"context"
-	"github.com/DjordjeVuckovic/lets-go/pkg/logger"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"log/slog"
@@ -28,15 +27,15 @@ func defaultOpt() middleware.RequestLoggerConfig {
 		HandleError: true,
 		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
 			if v.Error == nil {
-				logger.GetLogger().LogAttrs(context.Background(), slog.LevelInfo, "REQUEST",
-					logger.String("uri", v.URI),
-					logger.Int("status", v.Status),
+				slog.LogAttrs(context.Background(), slog.LevelInfo, "REQUEST",
+					slog.String("uri", v.URI),
+					slog.Int("status", v.Status),
 				)
 			} else {
-				logger.GetLogger().LogAttrs(context.Background(), slog.LevelError, "REQUEST_ERROR",
-					logger.String("uri", v.URI),
-					logger.Int("status", v.Status),
-					logger.String("err", v.Error.Error()),
+				slog.LogAttrs(context.Background(), slog.LevelError, "REQUEST_ERROR",
+					slog.String("uri", v.URI),
+					slog.Int("status", v.Status),
+					slog.String("err", v.Error.Error()),
 				)
 			}
 			return nil

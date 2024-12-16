@@ -25,13 +25,6 @@ type Config struct {
 	Level   Level
 	Handler Handler
 }
-type Attr = slog.Attr
-
-var logg *slog.Logger
-
-func GetLogger() *slog.Logger {
-	return logg
-}
 
 func Init(config Config) {
 	var level slog.Level
@@ -54,34 +47,6 @@ func Init(config Config) {
 	default:
 		handler = slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{})
 	}
-	logg = slog.New(handler)
-}
-
-func Info(msg string, args ...any) {
-	logg.Info(msg, args...)
-}
-
-func Debug(msg string, args ...any) {
-	logg.Debug(msg, args...)
-}
-
-func Error(msg string, args ...any) {
-	logg.Error(msg, args...)
-}
-
-func Warn(msg string, args ...any) {
-	logg.Warn(msg, args...)
-}
-
-func Int(key string, value int) Attr {
-	return slog.Int(key, value)
-}
-func String(key string, value string) Attr {
-	return slog.String(key, value)
-}
-func Float64(key string, value float64) Attr {
-	return slog.Float64(key, value)
-}
-func Bool(key string, value bool) Attr {
-	return slog.Bool(key, value)
+	logger := slog.New(handler)
+	slog.SetDefault(logger)
 }

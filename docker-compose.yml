@@ -22,6 +22,22 @@ services:
       - apps/identity-server/.env.container
     depends_on:
       - identity-server.db
+      - identity-server-migrator
+    networks:
+      - lets-go-net
+  identity-server-migrator:
+    image: migrate/migrate
+    entrypoint: [
+      "migrate",
+      "-path=/migrations",
+      "-database=postgresql://identity-server:identity-server@identity-server.db:5432/identity-server?sslmode=disable",
+      "-verbose",
+      "up",
+    ]
+    depends_on:
+      - identity-server.db
+    volumes:
+      - ./apps/identity-server/internal/db/migrations:/migrations
     networks:
       - lets-go-net
 volumes:

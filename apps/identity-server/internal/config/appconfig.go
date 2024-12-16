@@ -7,16 +7,16 @@ import (
 	"os"
 )
 
-type Config struct {
+type AppConfig struct {
 	LogLevel    logger.Level
 	LogHandler  logger.Handler
 	Environment string
 }
 
-func LoadConfig() *Config {
-	environment := os.Getenv("ENVIRONMENT")
+func LoadAppConfig() *AppConfig {
+	env := os.Getenv("ENVIRONMENT")
 	if err := godotenv.Load(); err != nil {
-		if environment == "local" {
+		if env == "local" {
 			panic(err)
 		}
 		fmt.Printf("Skipping .env file ...")
@@ -24,9 +24,9 @@ func LoadConfig() *Config {
 	logLvl := os.Getenv("LOG_LEVEL")
 	logHandler := os.Getenv("LOG_HANDLER")
 
-	return &Config{
+	return &AppConfig{
 		LogLevel:    logger.Level(logLvl),
 		LogHandler:  logger.Handler(logHandler),
-		Environment: environment,
+		Environment: env,
 	}
 }
